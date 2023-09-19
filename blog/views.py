@@ -26,14 +26,8 @@ feed_list_view = FeedListView.as_view()
 
 class FeedDetailView(DetailView):
     model = Post
-    template_name = 'blog.feed_detail.html'
+    template_name = 'blog/feed_detail.html'
     context_object_name = 'feed_detail'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        slug = self.kwargs.get('slug')
-        context['slug'] = slug
-        return context
 
 
 feed_detail_view = FeedDetailView.as_view()
