@@ -1,4 +1,6 @@
 import os
+from pathlib import Path
+
 import environ
 from django.contrib.messages import constants as messages
 
@@ -7,7 +9,8 @@ from django.contrib.messages import constants as messages
 # django-environ
 ##########################
 root = environ.Path(__file__) - 2
-BASE_DIR = root
+#BASE_DIR = root
+BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 environ.Env.read_env(env.str(root(), '.env'))
 DEBUG = env.bool('DEBUG', default=False)
@@ -39,6 +42,7 @@ INSTALLED_APPS = [
 
     # apps
     'users.apps.UsersConfig',
+    'blog.apps.BlogConfig',
     'common.apps.CommonConfig',
     'messenger.apps.MessengerConfig',
     'services.apps.ServicesConfig',
@@ -64,7 +68,9 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [
+            BASE_DIR / "frontend/templates",
+                 ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -72,7 +78,6 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                'django.template.context_processors.request',
             ],
         },
     },
@@ -126,7 +131,10 @@ AUTH_USER_MODEL = 'users.User'
 # STATIC AND MEDIA
 ################################
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_TEST_ROOT = os.path.join(BASE_DIR, 'media/test/')
@@ -137,8 +145,8 @@ MEDIA_TEST_ROOT = os.path.join(BASE_DIR, 'media/test/')
 ################################
 CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
 CKEDITOR_CONFIGS = {
-    'awesome_ckeditor': {
-        'toolbar': 'Basic',
+    'default': {
+        'width': 'auto',
     },
 }
 
@@ -148,7 +156,8 @@ CKEDITOR_CONFIGS = {
 ################################
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
+    #'allauth.account.auth_backends.AuthenticationBackend',
+    #'users.backends.AuthBackend',
 ]
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
@@ -175,6 +184,8 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     },
 }
+#ACCOUNT_SIGNUP_REDIRECT_URL = 'u'
+
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -194,3 +205,7 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
+
+AUTHENTICATED_LOGIN_REDIRECTS = 'feed_list_view'
+LOGIN_REDIRECT_URL = 'feed_list_view'
+ACCOUNT_LOGOUT_REDIRECT_URL ='auth_login'
