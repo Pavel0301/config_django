@@ -19,13 +19,14 @@ ALLOWED_HOSTS = env.str('ALLOWED_HOSTS', default='').split(',')
 
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'channels',
 
     # packages
     'allauth',
@@ -42,13 +43,23 @@ INSTALLED_APPS = [
 
     # apps
     'users.apps.UsersConfig',
+    'friendship.apps.FriendshipConfig',
     'blog.apps.BlogConfig',
     'common.apps.CommonConfig',
     'messenger.apps.MessengerConfig',
     'services.apps.ServicesConfig',
     # last
     'django_cleanup.apps.CleanupConfig',
+
+    'chat',
 ]
+
+CHANNEL_LAYERS = {
+    'default': {
+        "BACKEND": 'channels.layers.InMemoryChannelLayer'
+    }
+}
+
 
 CRISPY_TEMPLATE_PACK = 'uni_form'
 
@@ -83,7 +94,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "config.wsgi.application"
+ASGI_APPLICATION = 'config.asgi.application'
 
 DATABASES = {
     'default': {

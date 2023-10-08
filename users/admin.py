@@ -1,18 +1,17 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-from users.models import User, Profile
+from users.users import User, Profile
 from django.contrib.auth.admin import UserAdmin
 
 class ProfileAdmin(admin.StackedInline):
     model = Profile
     fields = (
-        'followers',
-        'friends',
         'city',
         'telegram_id',
         'instagram_link',
     )
     fk_name = 'user'
+
 
 
 @admin.register(User)

@@ -7,6 +7,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from users.managers import CustomUserManager
 
 
+
 class User(AbstractUser):
     """ Модель пользователя """
     username = models.CharField(
@@ -49,8 +50,7 @@ class Profile(models.Model):
     user = models.OneToOneField(
         to=User, on_delete=models.CASCADE, verbose_name='Профиль', related_name='profile'
     )
-    friends = models.ManyToManyField(User, blank=True, related_name='friends')
-    followers = models.ManyToManyField(User, blank=True, related_name='followers')
+
     bio = models.CharField(max_length=250, blank=True, null=True)
     city = models.CharField(max_length=20, blank=True, null=True)
     telegram_id = models.CharField(max_length=20, blank=True, null=True, verbose_name='Telegram ID')
@@ -63,3 +63,6 @@ class Profile(models.Model):
 
     def __str__(self):
         return f'{self.user} ({self.pk})'
+
+
+

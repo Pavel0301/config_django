@@ -2,15 +2,12 @@
 
 from ckeditor.fields import RichTextField
 from django.db import models
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.text import slugify
 from taggit.managers import TaggableManager
 
 
-from users.models import User
+from users.users import User
 
 
 class PublishedManager(models.Manager):

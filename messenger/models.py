@@ -1,8 +1,9 @@
 from django.db import models
+from django.utils.text import slugify
 
 from common.dicts import CHAT_ROOM_MAX_NAME
 from messenger.managers import MessageManager
-from users.models import User
+from users.users import User
 
 
 class MessengerRoom(models.Model):
@@ -19,6 +20,8 @@ class MessengerRoom(models.Model):
     participants = models.ManyToManyField(to=User, blank=False)
     room_type = models.CharField(max_length=2, choices=MessengerRoomType.choices, default=MessengerRoomType.DIRECT_ROOM)
 
+    slug = models.SlugField(max_length=40, unique=True)
+
     class Meta:
         verbose_name = 'Чат-комната'
         verbose_name_plural = 'Чат-комнаты'
@@ -31,6 +34,15 @@ class MessengerRoom(models.Model):
     def __str__(self):
         return f'{self.name} ({self.room_type}'
 
+    def save(self, *args, **kwargs):
+        #new_room = self.pk is None
+        #super().save(*args, **kwargs)
+        if not self.slug:
+            self.slug = slugify(self.name)
+            super().save(*args, **kwargs)
+
+
+
 
 class Message(models.Model):
     """ Модель собщений """
@@ -41,10 +53,10 @@ class Message(models.Model):
     room = models.ForeignKey(
         to=MessengerRoom, on_delete=models.CASCADE, verbose_name='Комната чата', related_name='room_m'
     )
-    text = models.CharField(blank=False, null=False, max_length=1024)
-    read_users = models.ManyToManyField(
-        User, related_name='messages_read_users'
-    )
+    content = models.TextField()
+    #read_users = models.ManyToManyField(
+    #    User, related_name='messages_read_users'
+    #)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     objects = MessageManager()
