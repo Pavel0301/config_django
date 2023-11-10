@@ -1,0 +1,6 @@
+{% block content %}
+{% load friendshiptags %}
+{% get_by_name friendship_context_object_name as var %}
+{% friends var %}
+{% endblock %}
+

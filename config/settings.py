@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'friendship.apps.FriendshipConfig',
     'blog.apps.BlogConfig',
-    'common.apps.CommonConfig',
     'messenger.apps.MessengerConfig',
     'services.apps.ServicesConfig',
     # last
@@ -90,6 +89,13 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
+
+            'libraries':{
+                'friendshiptags': 'friendship.friendshiptags',
+                'userstags': 'users.userstags',
+
+
+            }
         },
     },
 ]
@@ -219,4 +225,4 @@ MESSAGE_TAGS = {
 
 AUTHENTICATED_LOGIN_REDIRECTS = 'feed_list_view'
 LOGIN_REDIRECT_URL = 'feed_list_view'
-ACCOUNT_LOGOUT_REDIRECT_URL ='auth_login'
+ACCOUNT_LOGOUT_REDIRECT_URL = 'auth_login'

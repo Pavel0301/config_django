@@ -7,7 +7,7 @@ from django.utils import timezone
 from taggit.managers import TaggableManager
 
 
-from users.users import User
+from users.models import User
 
 
 class PublishedManager(models.Manager):

@@ -1,28 +1,25 @@
-from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, render
 
 from django.views.generic import DetailView, ListView
 
-from users.users import User, Profile
+from config import settings
+from users.models import User, Profile
 
+def get_user_context_object_name():
+    return getattr(settings, 'USER_CONTEXT_OBJECT_NAME', 'user')
 
+@login_required(login_url='auth_login')
+def view_user_profile(request, username, template_name='users/user_profile.html'):
+    user = get_object_or_404(User, username=username)
+    profile_context = User.objects.profile(user)
 
-class UserProfileDetailView(DetailView):
-    model = User
-    template_name = 'users/user_profile.html'
-    context_object_name = 'user'
-
-
-user_profile_detail_view = UserProfileDetailView.as_view()
-
-
-class UserFriendsListView(ListView):
-    model = Profile
-    template_name = 'users/user_friends_list_view.html'
-    context_object_name = 'friends'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        get_object_or_404(Profile, )
-
-
-user_friends_list_view = UserFriendsListView.as_view()
+    return render(
+        request,
+        template_name,
+        {
+            get_user_context_object_name(): user,
+            'user_context_object_name': get_user_context_object_name(),
+            'profile': profile_context,
+        }
+    )

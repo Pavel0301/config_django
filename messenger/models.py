@@ -1,9 +1,9 @@
 from django.db import models
 from django.utils.text import slugify
 
-from common.dicts import CHAT_ROOM_MAX_NAME
+from services.common.dicts import CHAT_ROOM_MAX_NAME
 from messenger.managers import MessageManager
-from users.users import User
+from users.models import User
 
 
 class MessengerRoom(models.Model):

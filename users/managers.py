@@ -1,4 +1,5 @@
 from django.contrib.auth.base_user import BaseUserManager
+from django.apps import apps
 
 
 class CustomUserManager(BaseUserManager):
@@ -43,3 +44,10 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_active', True)
 
         return self._create_user(phone_number, email, password, username, **extra_fields)
+
+    def profile(self, user):
+        """Возвращает содержимое профиля пользователя"""
+        model = apps.get_model('users', 'Profile')
+        queryset = model.objects.get(user=user)
+
+        return queryset

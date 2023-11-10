@@ -3,7 +3,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
 
 from messenger.models import MessengerRoom, Message
-from users.users import User
+from users.models import User
 
 
 class ChatConsumer(AsyncWebsocketConsumer):

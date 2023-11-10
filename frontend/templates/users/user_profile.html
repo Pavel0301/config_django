@@ -1,6 +1,7 @@
 {% extends 'common/base.html' %}
-
+{% load userstags %}
 {% block body %}
- <h1>{{user.username}}</h1>
-
+{% get_by_name user_context_object_name as var %}
+{% profile var%}
 {% endblock %}
+

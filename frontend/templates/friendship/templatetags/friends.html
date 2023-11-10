@@ -1,0 +1,14 @@
+<ul>
+    {% if friends %}
+    <h1>Your friends </h1>
+    {% for friend in friends %}
+      {% if friend.first_name or friend.last_name %}
+      <li>{{friend.username}} {{friend.first_name}} {{friend.last_name}}</li>
+      {% else %}
+      <li><a href="{% url 'view_user_profile' friend.username%}">{{friend.username}}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% else%}
+    У вас еще нет друзей
+    {% endif %}
+</ul>
