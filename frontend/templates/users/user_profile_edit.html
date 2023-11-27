@@ -1,0 +1,9 @@
+{% extends 'common/base.html' %}
+{% block body %}
+
+{{us_form}}
+{{pr_form}}
+<br>
+<a href="{% url 'edit_user_profile' username %}">Сохранить</a>
+
+{% endblock %}

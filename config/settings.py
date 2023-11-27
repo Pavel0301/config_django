@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'ckeditor',
     'crispy_forms',
 
-
     # apps
     'users.apps.UsersConfig',
     'friendship.apps.FriendshipConfig',

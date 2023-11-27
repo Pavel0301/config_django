@@ -1,22 +1,25 @@
-
-
 from ckeditor.fields import RichTextField
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from taggit.managers import TaggableManager
-
-
 from users.models import User
 
 
-class PublishedManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(status=Post.Status.PUBLISHED)
+class PostManager(models.Manager):
+    """Менеджер постов"""
+
+    def get_published_posts(self):
+        queryset = Post.objects.filter(status='PUBLISHED')
+        return queryset
+
+    def draft_posts(self):
+        queryset = Post.objects.filter(status='DRAFT')
+        return queryset
 
 
 class Post(models.Model):
-
+    """Модель поста"""
     class Status(models.TextChoices):
         DRAFT = 'DF', 'Draft'
         PUBLISHED = 'PB', 'Published'
@@ -43,7 +46,7 @@ class Post(models.Model):
     #saves_posts = models.ManyToManyField(User, related_name="blog_posts_save", blank=True, verbose_name='Сохранённые посты пользователя')
 
     objects = models.Manager()
-    published = PublishedManager()
+    published = PostManager()
 
     class Meta:
         ordering = ['-publish']

@@ -3,9 +3,8 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from phonenumber_field.modelfields import PhoneNumberField
-
+from PIL import Image
 from users.managers import CustomUserManager
-
 
 
 class User(AbstractUser):
@@ -50,7 +49,9 @@ class Profile(models.Model):
     user = models.OneToOneField(
         to=User, on_delete=models.CASCADE, verbose_name='Профиль', related_name='profile'
     )
-
+    img = models.ImageField(upload_to='profile_images', blank=True, null=True, default='blank_profile_picture.png')
+    first_name = models.CharField(max_length=30, blank=True, null=True)
+    last_name = models.CharField(max_length=30, blank=True, null=True)
     bio = models.CharField(max_length=250, blank=True, null=True)
     city = models.CharField(max_length=20, blank=True, null=True)
     telegram_id = models.CharField(max_length=20, blank=True, null=True, verbose_name='Telegram ID')
@@ -64,5 +65,12 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.user} ({self.pk})'
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
 
+        img = Image.open(self.img.path)
 
+        if img.height > 100 or img.width > 100:
+            new_img = (100, 100)
+            img.thumbnail(new_img)
+            img.save(self.img.path)

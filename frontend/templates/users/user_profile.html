@@ -3,5 +3,6 @@
 {% block body %}
 {% get_by_name user_context_object_name as var %}
 {% profile var%}
+<br>
+<a href="{% url 'edit_user_profile' username %}">Изменить данные профиля</a>
 {% endblock %}
-

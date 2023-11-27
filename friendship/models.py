@@ -115,7 +115,7 @@ class FriendshipRequest(models.Model):
         # Перебор кэша обратных запросов - обратный запрос может быть удален
         bust_cache('requests', self.from_user.pk)
         bust_cache('sent_requests', self.to_user.pk)
-        #Удаление кэш друзей - добавлены новые друзья
+        # Удаление кэша друзей - добавлены новые друзья
         bust_cache('friends', self.to_user.pk)
         bust_cache('friends', self.from_user.pk)
 
